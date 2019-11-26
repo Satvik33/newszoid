@@ -1,0 +1,76 @@
+<mat-toolbar color="primary" class="top-navbar" [class.mat-elevation-z6]="true">
+  <section>
+    <button mat-icon-button class="icon-button" (click)="sideNavBar.toggle()">
+      <mat-icon aria-hidden="false" aria-label="main menu">menu</mat-icon>
+    </button>
+    <button mat-icon-button class="icon-button" routerLink="/trending">
+      <mat-icon aria-hidden="false" aria-label="logo" svgIcon="logo"></mat-icon>
+    </button>
+  </section>
+  <!-- <mat-form-field appearance="outline" class="search-bar">
+    <input matInput placeholder="Search for tags and locations" type="search" class="placeholder" style="color: aqua">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field> -->
+  <app-searchbar></app-searchbar>
+  <section *ngIf="loggedIn(); else loggedOut">
+    <mat-menu #userMenu="matMenu">
+
+      <button mat-menu-item routerLink="/viewProfile">
+        <mat-icon aria-hidden="false" aria-label="edit profile">accessibility_new</mat-icon>
+        Hi {{username}}!
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="/editProfile">
+        <mat-icon aria-hidden="false" aria-label="edit profile">edit</mat-icon>
+        Edit Profile
+      </button>
+      <button mat-menu-item (click)="signOut()">
+        <mat-icon aria-hidden="false" aria-label="edit profile">exit_to_app</mat-icon>
+        Sign Out
+      </button>
+    </mat-menu>
+    <button mat-icon-button class="icon-button" [mat-menu-trigger-for]="userMenu">
+      <mat-icon aria-hidden="false" aria-label="user menu">person</mat-icon>
+    </button>
+  </section>
+  <ng-template #loggedOut>
+    <button mat-raised-button (click)="openLogin()" id="signin-button">
+      Sign in
+    </button>
+  </ng-template>
+</mat-toolbar>
+<mat-sidenav-container hasBackdrop="false">
+  <mat-sidenav #sideNavBar mode="side" opened="true" class="side-navbar" fixedInViewport="true" fixedTopGap="70">
+    <button mat-flat-button class="navbar-button" (click)="trending()">
+      <mat-icon aria-hidden="false" aria-label="main menu" class="button-icon">local_activity</mat-icon>
+      Trending Now
+    </button>
+    <button mat-flat-button class="navbar-button" (click)="recommendation()">
+      <mat-icon aria-hidden="false" aria-label="main menu" class="button-icon" >person</mat-icon>
+      For You
+    </button>
+    <!--<button mat-flat-button class="navbar-button" (click)="liked()">
+      <mat-icon aria-hidden="false" aria-label="main menu" class="button-icon">thumb_up</mat-icon>
+      Liked News
+    </button>-->
+    <button mat-flat-button class="navbar-button" (click)="posted()">
+      <mat-icon aria-hidden="false" aria-label="main menu" class="button-icon">movie_creation</mat-icon>
+      Your Posts
+    </button>
+    <button mat-flat-button class="navbar-button" (click)="upload()">
+      <mat-icon aria-hidden="false" aria-label="main menu" class="button-icon" >add_to_queue</mat-icon>
+      Upload News
+    </button>
+    <mat-divider></mat-divider>
+    <section *ngFor="let category of categories">
+      <button mat-flat-button class="navbar-button" [routerLink]="['/category', category.name]">
+        <mat-icon aria-hidden="false" aria-label="main menu" class="button-icon">{{category.icon}}</mat-icon>
+        {{category.name}}
+      </button>
+    </section>
+  </mat-sidenav>
+  <mat-divider [vertical]="true"></mat-divider>
+  <mat-sidenav-content class="main-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

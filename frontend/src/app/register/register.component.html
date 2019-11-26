@@ -1,0 +1,93 @@
+<mat-card class="registration-form">
+  <mat-card-title class="title">Please register yourself</mat-card-title>
+  <mat-card-content>
+    <mat-vertical-stepper linear #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup" class="container">
+          <ng-template matStepLabel>Necessary details</ng-template>
+          <div>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Pick an username" formControlName="username" required #username>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Choose a strong Password"
+                     formControlName="password" [type]="hide ? 'password' : 'text'" #password>
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-hint>At least eight characters. Use uppercase letters, lowercase letters, numbers and special characters.
+              </mat-hint>
+              <mat-error
+                *ngIf="!firstFormGroup.controls['password'].valid && firstFormGroup.controls['password'].touched">
+                {{ getErrorPassword() }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <br>
+          <br>
+          <div>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="What's your Email Address?" formControlName="email" #email>
+              <mat-error
+                *ngIf="!firstFormGroup.controls['email'].valid && firstFormGroup.controls['email'].touched">
+                {{ getErrorEmail() }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-raised-button color="primary" matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="secondFormGroup" optional>
+        <form [formGroup]="secondFormGroup" class='container'>
+          <ng-template matStepLabel>Profile Details</ng-template>
+          <div>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="What's your name?" formControlName="name" #name>
+              <mat-error *ngIf="!name.valid && name.touched">
+                {{ titleAlert }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" placeholder="When were you born?" formControlName="date"
+                     #date>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="thirdFormGroup" optional>
+        <form [formGroup]="thirdFormGroup" class='container'>
+          <ng-template matStepLabel>Your Preferences</ng-template>
+          <mat-selection-list #list [(ngModel)]="selectedOptions" [ngModelOptions]="{standalone: true}"
+                              (ngModelChange)="onNgModelChange($event)" >
+            <mat-list-option [value]="category.name" *ngFor="let category of categories">
+              <mat-icon aria-hidden="false" matListAvatar>{{category.icon}}</mat-icon>
+              {{category.name}}
+            </mat-list-option>
+          </mat-selection-list>
+          <div>
+            <button mat-button matStepperPrevious class="form-button">Back</button>
+            <button mat-raised-button color="primary" class="form-button" type="submit" matStepperNext
+                    (click)=register(name.value,username.value,email.value,date.value,password.value,selectedOptions)>
+              Submit
+            </button>
+            <button mat-raised-button color="warn" class="form-button" (click)="stepper.reset()">Reset</button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-vertical-stepper>
+  </mat-card-content>
+</mat-card>

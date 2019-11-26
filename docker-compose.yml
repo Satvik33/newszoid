@@ -1,0 +1,141 @@
+version: '3'
+
+services:
+  config-server:
+    build: config-server/
+    container_name: config-server
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8888:8888
+
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    restart: always
+    ports:
+      - 7474:7474
+      - 7687:7687
+    network_mode: "host"
+    hostname: localhost
+    environment:
+      - NEO4J_AUTH=neo4j/secret
+    volumes:
+      - $HOME/neo4j/data:/data
+
+  eureka-server:
+    build: eureka-server/
+    container_name: eureka-server
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8085:8085
+
+  api-gateway:
+    build: api-gateway/
+    container_name: api-gateway
+    depends_on:
+      - config-server
+      - eureka-server
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8080:8080
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    network_mode: "host"
+    hostname: localhost
+    volumes:
+      - $HOME/mongo:/data/db
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    container_name: mysql-docker
+    network_mode: host
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_HOST=%
+    volumes:
+      - $HOME/mysql:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  registration-service:
+    build: registration-service/
+    restart: always
+    network_mode: host
+    hostname: localhost
+    container_name: user-reg
+    depends_on:
+      - config-server
+      - mongo
+      - eureka-server
+      - rabbitmq
+      - api-gateway
+    ports:
+      - "8092:8092"
+
+  login-service:
+    build: login-service/
+    container_name: login-service
+    depends_on:
+      - config-server
+      - eureka-server
+      - mysql
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8091:8091
+
+  content-service:
+    build: content-service/
+    container_name: content-service
+    depends_on:
+      - config-server
+      - eureka-server
+      - mongo
+      - rabbitmq
+      - registration-service
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8093:8093
+
+  news-zoid-frontend:
+    build: frontend/
+    container_name: news-zoid-frontend-container
+    network_mode: "host"
+    hostname: localhost
+    restart: always
+    ports:
+      - "4200:4200"
+
+  search:
+    build: search-service/
+    container_name: search-service
+    depends_on:
+      - eureka-server
+      - api-gateway
+      - rabbitmq
+      - content-service
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8094:8094

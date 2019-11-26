@@ -1,0 +1,22 @@
+<mat-card class="post" (click)="postDetail()">
+    <mat-video [overlay]="false" color="primary" spinner="spin">
+        <source src="{{post?.videoUrl}}" type="video/mp4">
+    </mat-video>
+  <br>
+  <mat-card-title>{{post?.title}}</mat-card-title>
+  <mat-card-subtitle>{{post?.postedBy?.username}}</mat-card-subtitle>
+  <mat-card-subtitle>viewed by: {{views}}
+    <br>
+    posted on: {{post?.timestamp | date:'mediumDate'}}</mat-card-subtitle>
+  <!--<mat-card-subtitle>{{post?.postedBy?.username}}</mat-card-subtitle>
+  <mat-card-actions>
+    <button mat-icon-button (click)="like()">
+      <mat-icon aria-hidden="false" aria-label="post actions" class="button-icon">thumb_up</mat-icon>
+    </button>
+    {{likes}}
+    <button mat-icon-button (click)="flag()">
+      <mat-icon aria-hidden="false" aria-label="post actions" class="button-icon">flag</mat-icon>
+    </button>
+    {{flags}}
+  </mat-card-actions>-->
+</mat-card>

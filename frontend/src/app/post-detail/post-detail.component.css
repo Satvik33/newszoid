@@ -1,0 +1,8 @@
+.post {
+  width: 50%;
+  margin: 20px auto;
+}
+.info {
+  display: flex;
+  justify-content: space-between;
+}

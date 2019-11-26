@@ -1,0 +1,10 @@
+<h2>Search results: </h2>
+<div class="grid-container">
+<mat-grid-list cols="3" rowHeight="380px">
+  <section *ngFor="let search of response" >
+    <mat-grid-tile>
+      <app-post [post]="search"></app-post>
+    </mat-grid-tile>
+  </section>
+</mat-grid-list>
+</div>

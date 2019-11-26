@@ -1,0 +1,10 @@
+.form-button {
+  text-align: start;
+  margin: 5px 0;
+}
+.mat-dialog-actions .mat-button-base+.mat-button-base {
+  margin-left: 0;
+}
+#title {
+  text-align: center;
+}

@@ -1,0 +1,34 @@
+<mat-card class="post">
+  <mat-video [preload]="true" [autoplay]="true" [overlay]="true"
+             color="primary" spinner="spin" src="{{post?.videoUrl}}">
+  </mat-video>
+  <br>
+  <mat-card-title>{{post?.title}}</mat-card-title>
+  <div class="info">
+    <mat-card-subtitle>{{post?.postedBy?.username}}</mat-card-subtitle>
+    <mat-card-subtitle>viewed by: {{views}} |
+      posted on: {{post?.timestamp | date:'mediumDate'}}
+    </mat-card-subtitle>
+  </div>
+  <mat-card-actions>
+    <button mat-icon-button (click)="like()">
+      <div *ngIf="isLiked; else notLiked">
+        <mat-icon aria-hidden="false" aria-label="post actions" class="button-icon" [ngStyle]="{color: 'blue'}">thumb_up</mat-icon>
+      </div>
+      <ng-template #notLiked>
+        <mat-icon aria-hidden="false" aria-label="post actions" class="button-icon" [ngStyle]="{color: 'black'}">thumb_up</mat-icon>
+      </ng-template>
+    </button>
+    {{likes}}
+
+    <button mat-icon-button (click)="flag()">
+      <div *ngIf="isFlagged; else notFlagged">
+        <mat-icon aria-hidden="false" aria-label="post actions" class="button-icon" [ngStyle]="{color: 'blue'}">flag</mat-icon>
+      </div>
+      <ng-template #notFlagged>
+        <mat-icon aria-hidden="false" aria-label="post actions" class="button-icon" [ngStyle]="{color: 'black'}">flag</mat-icon>
+      </ng-template>
+    </button>
+    {{flags}}
+  </mat-card-actions>
+</mat-card>

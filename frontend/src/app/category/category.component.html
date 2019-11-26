@@ -1,0 +1,14 @@
+<h2>
+  <mat-icon aria-hidden="false" aria-label="main menu" class="category-icon">
+    {{category.icon}}
+  </mat-icon>
+  {{category.name}}
+</h2>
+<mat-divider></mat-divider>
+<mat-grid-list cols="4">
+  <section *ngFor="let post of posts" >
+    <mat-grid-tile>
+      <app-post [post]="post"></app-post>
+    </mat-grid-tile>
+  </section>
+</mat-grid-list>

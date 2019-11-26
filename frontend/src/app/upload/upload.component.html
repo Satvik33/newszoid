@@ -1,0 +1,47 @@
+<h2 mat-dialog-title id="title">Upload News</h2>
+<form #myForm="ngForm" novalidate>
+  <mat-dialog-content>
+    <mat-form-field class="form-element">
+      <input matInput placeholder="Title" ngModel name="title" required #title>
+    </mat-form-field>
+
+    <mat-form-field class="form-element">
+      <mat-label>Category</mat-label>
+      <mat-select ngModel name="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat"  #category>
+          {{cat}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form-element">
+      <mat-label>Location</mat-label>
+      <mat-select ngModel name="location">
+        <mat-optgroup *ngFor="let locs of locations" [label]="locs.state">
+          <mat-option *ngFor="let loc of locs.districts" [value]="loc"  #location>
+            {{loc}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form-element">
+      <input matInput placeholder="Add Tags" ngModel name="addTags" #tags>
+    </mat-form-field>
+    <div class="progress-bar">
+      <p>{{currentProgress}}</p>
+      <mat-progress-bar mode = "determinate" [value] = "progressNumber"></mat-progress-bar>
+    </div>
+
+    <div>
+      <button mat-raised-button color="primary" (click)="onClick()">
+        <mat-icon>file_upload</mat-icon>
+        Select File
+      </button>
+      <input type="file" id="fileUpload" name="fileUpload" multiple="multiple" accept="{{accept}}" hidden="hidden"/>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)=addPost(myForm)>Submit</button>
+  </mat-dialog-actions>
+</form>
